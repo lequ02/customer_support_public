@@ -1,0 +1,38 @@
+[6]
+1h
+
+# Define the deep neural network model
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Embedding(len(tokenizer.word_index) + 1, 128),
+    tf.keras.layers.LSTM(64),
+    tf.keras.layers.LSTM(16),
+    tf.keras.layers.Dense(16, activation='relu'),
+    tf.keras.layers.Dense(len(label_encoder.classes_), activation='softmax')
+])
+
+
+Epoch 1/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 341s 3s/step - accuracy: 0.8173 - loss: 0.5387 - val_accuracy: 0.8458 - val_loss: 0.4223
+Epoch 2/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 393s 3s/step - accuracy: 0.8449 - loss: 0.4076 - val_accuracy: 0.8458 - val_loss: 0.4140
+Epoch 3/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 376s 3s/step - accuracy: 0.8559 - loss: 0.3042 - val_accuracy: 0.8390 - val_loss: 0.4504
+Epoch 4/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 377s 3s/step - accuracy: 0.9175 - loss: 0.2008 - val_accuracy: 0.7891 - val_loss: 0.5461
+Epoch 5/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 382s 3s/step - accuracy: 0.9581 - loss: 0.1250 - val_accuracy: 0.8129 - val_loss: 0.6606
+Epoch 6/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 385s 3s/step - accuracy: 0.9696 - loss: 0.0748 - val_accuracy: 0.7426 - val_loss: 0.7964
+Epoch 7/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 381s 3s/step - accuracy: 0.9893 - loss: 0.0368 - val_accuracy: 0.7687 - val_loss: 0.8534
+Epoch 8/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 386s 3s/step - accuracy: 0.9938 - loss: 0.0230 - val_accuracy: 0.8243 - val_loss: 1.0275
+Epoch 9/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 376s 3s/step - accuracy: 0.9933 - loss: 0.0230 - val_accuracy: 0.8107 - val_loss: 1.0952
+Epoch 10/30
+111/111 ━━━━━━━━━━━━━━━━━━━━ 334s 3s/step - accuracy: 0.9958 - loss: 0.0113 - val_accuracy: 0.8152 - val_loss: 1.1519
+28/28 ━━━━━━━━━━━━━━━━━━━━ 14s 461ms/step - accuracy: 0.8460 - loss: 0.4098
+Test loss: 0.41395026445388794
+Test accuracy: 0.8458049893379211
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 421ms/step
+Predicted product: General-purpose credit card or charge card

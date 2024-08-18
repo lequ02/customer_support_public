@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Complaint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        /* Preserve formatting for response_content */
+        .preserve-format {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center fade-in">
+        <h1 class="text-3xl font-bold mb-4 text-blue-600">Thank You</h1>
+        <p class="text-gray-700 mb-6">We appreciate your feedback. We will get in touch with you soon.</p>
+        <div class="bg-gray-100 p-4 rounded-md mb-6 text-left">
+            <h2 class="text-lg font-semibold mb-2 text-gray-800">Instant Support:</h2>
+            <!-- Add the preserve-format class here -->
+            <p class="text-gray-700 preserve-format">{{ response_content }}</p>
+        </div>
+        <button onclick="window.location.href='/'" 
+            class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all">
+            Submit Another Complaint
+        </button>
+    </div>
+</body>
+</html>

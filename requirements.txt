@@ -1,0 +1,12 @@
+openai
+sentence_transformers
+faiss-cpu
+pillow
+python-bidi
+flask
+werkzeug
+assemblyai
+requests
+tensorflow
+pandas
+tf-keras

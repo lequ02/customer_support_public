@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Complaint Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+/* 
+        .typing-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        } */
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full fade-in">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">Product Complaint Form</h1>
+        <form id="complaintForm" action="/submit-complaint" method="post" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">Product Name (Optional)</label>
+                <input type="text" id="productName" name="productName"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+
+            <div>
+                <label for="complaintText" class="block text-sm font-medium text-gray-700 mb-1">Complaint Details (Optional)</label>
+                <textarea id="complaintText" name="complaintText" rows="4"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"></textarea>
+            </div>
+
+            <div>
+                <label for="fileUpload" class="block text-sm font-medium text-gray-700 mb-1">Upload Files (Optional)</label>
+                <input type="file" id="fileUpload" name="fileUpload" multiple
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+            </div>
+
+            <div class="space-y-2">
+                <button type="button" id="startRecording"
+                    class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-all">
+                    Start Recording Audio (Optional)
+                </button>
+                <button type="button" id="stopRecording" style="display: none;"
+                    class="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-all">
+                    Stop Recording
+                </button>
+                <audio id="audioPlayback" controls style="display: none;" class="w-full mt-2"></audio>
+            </div>
+
+            <button type="submit" id="submitButton"
+                class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all">
+                Submit Complaint
+            </button>
+        </form>
+    </div>
+
+    <!-- Full-screen overlay with spinner -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center z-50">
+        <div class="flex flex-col items-center">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid mb-4"></div>
+            <p class="text-white text-lg font-semibold">Please wait, processing your request</p>
+            <!-- <p id="loadingText" class="text-white text-lg font-semibold typing-text text-center"></p> -->
+        </div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        document.getElementById('startRecording').addEventListener('click', async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = (event) => {
+                audioChunks.push(event.data);
+            };
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                document.getElementById('audioPlayback').src = audioUrl;
+                document.getElementById('audioPlayback').style.display = 'block';
+            };
+            mediaRecorder.start();
+            document.getElementById('startRecording').style.display = 'none';
+            document.getElementById('stopRecording').style.display = 'block';
+        });
+
+        document.getElementById('stopRecording').addEventListener('click', () => {
+            mediaRecorder.stop();
+            document.getElementById('stopRecording').style.display = 'none';
+            document.getElementById('startRecording').style.display = 'block';
+        });
+
+        document.getElementById('complaintForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.remove('hidden');  // Show the loading overlay
+            // typeText("Please wait, processing your request");
+
+            const formData = new FormData(e.target);
+
+            if (audioChunks.length > 0) {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                formData.append('audioComplaint', audioBlob, 'audio_complaint.wav');
+            }
+
+            // Check if at least one field is filled
+            const complaintText = formData.get('complaintText');
+            const fileUpload = formData.get('fileUpload');
+            const audioComplaint = formData.get('audioComplaint');
+
+            if (!complaintText && !fileUpload.name && !audioComplaint) {
+                alert('Please provide at least one of: complaint details, file upload, or audio recording.');
+                loadingOverlay.classList.add('hidden');  // Hide the loading overlay
+                return;
+            }
+
+            fetch('/submit-complaint', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                loadingOverlay.classList.add('hidden');  // Hide the loading overlay on error
+            });
+        });
+
+        // function typeText(text) {
+        //     const loadingText = document.getElementById('loadingText');
+        //     loadingText.textContent = '';
+        //     const words = text.split(' ');
+        //     let wordIndex = 0;
+        //     let charIndex = 0;
+
+        //     function type() {
+        //         if (wordIndex < words.length) {
+        //             if (charIndex < words[wordIndex].length) {
+        //                 loadingText.textContent += words[wordIndex][charIndex];
+        //                 charIndex++;
+        //                 const delay = words[wordIndex][charIndex - 1].match(/[,.]/) ? 500 : 100;
+        //                 setTimeout(type, delay);
+        //             } else {
+        //                 loadingText.textContent += ' ';
+        //                 wordIndex++;
+        //                 charIndex = 0;
+        //                 setTimeout(type, 0);  // Delay between words
+        //             }
+        //         }
+        //     }
+        //     type();
+        // }
+    </script>
+</body>
+
+</html>
