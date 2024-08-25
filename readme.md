@@ -9,7 +9,7 @@
 - [x] **AI Classifier to determine Product Category and sub_Product Category**
 
 ## SYSTEM PIPELINE
-![SYSTEM PIPELINE](https://github.com/user-attachments/assets/8f504bb1-81a0-4998-9669-14d091918a5a)
+![SYSTEM_PIPELINE](https://github.com/user-attachments/assets/bfb911df-dd7c-4bf8-9aae-a5c4bd4b464f)
 
 ## Quick Start
 - pip install -r requiremnts.txt
