@@ -8,6 +8,9 @@
 - [x] **Vector Database Implemtation**
 - [x] **AI Classifier to determine Product Category and sub_Product Category**
 
+## SYSTEM PIPELINE
+![SYSTEM PIPELINE](https://github.com/user-attachments/assets/8f504bb1-81a0-4998-9669-14d091918a5a)
+
 ## Quick Start
 - pip install -r requiremnts.txt
 - enter your API keys: OPENROUTER, OCR.space, AssemblyAI, OpenAI 
