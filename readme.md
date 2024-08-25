@@ -17,10 +17,11 @@
 - python app.py
 
 ## Multimodality Demo
-https://github.com/user-attachments/assets/867e6833-f24c-4887-acca-baacb2893ebf
+https://github.com/user-attachments/assets/08099554-1a65-4c2f-9f74-3f1e6f6c826a
+
 
 ### when processing image and text
-<img width="544" alt="result" src="https://github.com/user-attachments/assets/ca7a5078-87d7-4178-aad8-7aec68ea109d">
+<img width="544" alt="result" src="https://github.com/user-attachments/assets/d2299d2b-4649-436d-8411-5efa79b869ad">
 
 
 
